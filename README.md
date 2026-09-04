@@ -1,4 +1,4 @@
-# CODEX EWS Exit Scan Lite
+# CutoverSignal — EWS Exit Scan Lite
 
 Local, credential-free static inventory for likely Exchange Web Services dependencies.
 
