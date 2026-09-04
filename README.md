@@ -19,12 +19,12 @@ Requires Node.js 22.6 or newer.
 Run the versioned CLI directly from GitHub without cloning or a global install:
 
 ```powershell
-npx --yes github:NorphyOG/cutoversignal#v0.3.1 C:\path\to\repository --format markdown --out ews-report.md
+npx --yes github:NorphyOG/cutoversignal#v0.3.2 C:\path\to\repository --format markdown --out ews-report.md
 ```
 
-The command is pinned to the `v0.3.1` Git tag. Exit code `1` means the scan completed and found EWS evidence that requires review.
+The command is pinned to the `v0.3.2` Git tag. Exit code `1` means the scan completed and found EWS evidence that requires review.
 
-Do not use `v0.3.0`: remote installation exposed Node's prohibition on stripping TypeScript inside `node_modules`. `v0.3.1` uses a tested JavaScript distribution while retaining the typed source and manifest verification.
+Do not use `v0.3.0`: remote installation exposed Node's prohibition on stripping TypeScript inside `node_modules`. `v0.3.1` introduced the tested JavaScript distribution; `v0.3.2` adds .NET project and PowerShell coverage while reducing unrelated generic operation matches.
 
 Or run a local clone:
 
@@ -77,7 +77,8 @@ Useful feedback includes the scanner version, operating system, bounded verdict,
 ## Scope
 
 - Scans supported text/code files up to 1 MB.
-- Detects EWS SDK namespaces, raw SOAP endpoints, client construction, impersonation, subscriptions, folder/item operations, credentials and Autodiscover signals.
+- Detects EWS SDK namespaces and package references (including .NET project and PowerShell files), raw SOAP endpoints, client construction, impersonation, subscriptions, folder/item operations, credentials and Autodiscover signals.
+- Reports generic folder/item operation names only when the same file contains a stronger EWS signature, reducing unrelated `GetItem`/`FolderId` matches.
 - Redacts likely secret values from evidence snippets.
 - Does not upload files, connect to Microsoft 365, or require credentials.
 

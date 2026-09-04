@@ -3,14 +3,14 @@ import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { renderMarkdown, scanRepository,                 } from "./scanner.mjs";
 
-                                                            
 
-                               
-                                 
-                       
-                     
-                      
- 
+
+
+
+
+
+
+
 
 function required(environment                   , key        )         {
   const value = environment[key]?.trim();

@@ -11,7 +11,8 @@ const targets = [
 for (const [sourcePath, outputPath] of targets) {
   const source = readFileSync(resolve(sourcePath), "utf8");
   const compiled = stripTypeScriptTypes(source, { mode: "strip" })
-    .replaceAll('"./scanner.ts"', '"./scanner.mjs"');
+    .replaceAll('"./scanner.ts"', '"./scanner.mjs"')
+    .replace(/[ \t]+$/gm, "");
   const absoluteOutput = resolve(outputPath);
   mkdirSync(dirname(absoluteOutput), { recursive: true });
   writeFileSync(absoluteOutput, compiled, "utf8");

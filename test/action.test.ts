@@ -25,7 +25,10 @@ function fixture(source: string): Record<string, string> {
 }
 
 test("action produces a bounded report and a privacy-safe summary before enforcing findings", () => {
-  const environment = fixture("service.FindItems(WellKnownFolderName.Inbox, view);");
+  const environment = fixture([
+    "using Microsoft.Exchange.WebServices.Data;",
+    "service.FindItems(WellKnownFolderName.Inbox, view);"
+  ].join("\n"));
   const result = runAction(environment);
 
   assert.equal(result.verdict, "EWS_MIGRATION_REQUIRED");

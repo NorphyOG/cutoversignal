@@ -2,7 +2,7 @@ import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { renderMarkdown, scanRepository } from "./scanner.mjs";
 
-const VERSION = "0.3.1";
+const VERSION = "0.3.2";
 const args = process.argv.slice(2);
 const positionals           = [];
 let formatOption                    ;

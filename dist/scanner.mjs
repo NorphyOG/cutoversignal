@@ -1,53 +1,55 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, relative, resolve } from "node:path";
 
-                                                              
 
-                          
-                 
-                     
-               
-               
-                   
-                  
-                         
- 
 
-                             
-                                          
-               
-                       
-                      
-                                   
-                                                         
-                        
- 
 
-                
-             
-                     
-                  
-                  
-                         
-                        
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const RULES         = [
-  { id: "EWS001", severity: "critical", pattern: /Microsoft\.Exchange\.WebServices/i, feature: ".NET EWS Managed API", graphDirection: "Replace the EWS SDK surface with Microsoft Graph SDK or REST calls.", extensions: [".cs", ".fs", ".vb", ".config", ".xml"] },
+  { id: "EWS001", severity: "critical", pattern: /Microsoft\.Exchange\.WebServices/i, feature: ".NET EWS Managed API", graphDirection: "Replace the EWS SDK surface with Microsoft Graph SDK or REST calls.", extensions: [".cs", ".fs", ".vb", ".csproj", ".fsproj", ".vbproj", ".props", ".targets", ".config", ".xml", ".ps1", ".psm1", ".psd1"] },
   { id: "EWS002", severity: "critical", pattern: /microsoft\.exchange\.webservices/i, feature: "EWS Java API", graphDirection: "Map Java EWS calls to Microsoft Graph REST or a supported Graph SDK.", extensions: [".java", ".kt", ".properties", ".xml"] },
   { id: "EWS003", severity: "critical", pattern: /\/EWS\/Exchange\.asmx/i, feature: "Raw EWS SOAP endpoint", graphDirection: "Inventory SOAP operations and map each to Graph; flag parity gaps." },
   { id: "EWS004", severity: "high", pattern: /\bExchangeService\b/, feature: "EWS client construction", graphDirection: "Replace connection/auth bootstrap with GraphServiceClient." },
   { id: "EWS005", severity: "high", pattern: /\bImpersonatedUserId\b|\bExchangeImpersonation\b/, feature: "Mailbox impersonation", graphDirection: "Design least-privilege application access and mailbox scoping before migration." },
   { id: "EWS006", severity: "high", pattern: /\bStreamingSubscription(Connection)?\b|\bSubscribeToStreamingNotifications\b/, feature: "Streaming notifications", graphDirection: "Evaluate Graph change notifications and lifecycle handling." },
-  { id: "EWS007", severity: "medium", pattern: /\bWellKnownFolderName\b|\bFolderId\b/, feature: "EWS folder addressing", graphDirection: "Map folder identifiers and well-known folders to Graph mailFolder/calendar/contact endpoints." },
-  { id: "EWS008", severity: "medium", pattern: /\bFindItems\b|\bGetItem\b|\bCreateItem\b|\bUpdateItem\b|\bDeleteItem\b/, feature: "EWS item operation", graphDirection: "Use the Microsoft EWS-to-Graph operation mapping and test semantic differences." },
+  { id: "EWS007", severity: "medium", pattern: /\bWellKnownFolderName\b|\bFolderId\b/, feature: "EWS folder addressing", graphDirection: "Map folder identifiers and well-known folders to Graph mailFolder/calendar/contact endpoints.", requiresEwsContext: true },
+  { id: "EWS008", severity: "medium", pattern: /\bFindItems\b|\bGetItem\b|\bCreateItem\b|\bUpdateItem\b|\bDeleteItem\b/, feature: "EWS item operation", graphDirection: "Use the Microsoft EWS-to-Graph operation mapping and test semantic differences.", requiresEwsContext: true },
   { id: "EWS009", severity: "high", pattern: /\bExchangeCredentials\b|\bWebCredentials\b/, feature: "Legacy credential path", graphDirection: "Move to OAuth 2.0 and least-privilege Graph permissions." },
   { id: "EWS010", severity: "medium", pattern: /\bAutodiscoverUrl\b|\bGetUserSettings\b/, feature: "Autodiscover dependency", graphDirection: "Confirm whether Graph or a separate supported discovery mechanism covers the scenario." }
 ];
 
-const TEXT_EXTENSIONS = new Set([".cs", ".fs", ".vb", ".java", ".kt", ".xml", ".config", ".json", ".js", ".mjs", ".cjs", ".ts", ".py", ".properties", ".yml", ".yaml"]);
+const TEXT_EXTENSIONS = new Set([".cs", ".fs", ".vb", ".csproj", ".fsproj", ".vbproj", ".props", ".targets", ".java", ".kt", ".xml", ".config", ".json", ".js", ".mjs", ".cjs", ".ts", ".py", ".ps1", ".psm1", ".psd1", ".properties", ".yml", ".yaml"]);
 const IGNORED_DIRECTORIES = new Set([".git", "node_modules", "bin", "obj", "dist", "build", ".idea", ".vs"]);
 const MAX_FILE_BYTES = 1_000_000;
+const EWS_CONTEXT_PATTERN = /Microsoft\.Exchange\.WebServices|microsoft\.exchange\.webservices|\/EWS\/Exchange\.asmx|\bExchangeService\b|\bImpersonatedUserId\b|\bExchangeImpersonation\b|\bStreamingSubscription(?:Connection)?\b|\bSubscribeToStreamingNotifications\b|\bExchangeCredentials\b|\bWebCredentials\b|\bAutodiscoverUrl\b/i;
 
 function redact(line        )         {
   return line
@@ -82,11 +84,14 @@ export function scanRepository(inputRoot        )             {
 
   for (const file of files) {
     const extension = extname(file).toLowerCase();
-    const lines = readFileSync(file, "utf8").split(/\r?\n/);
+    const content = readFileSync(file, "utf8");
+    const hasEwsContext = EWS_CONTEXT_PATTERN.test(content);
+    const lines = content.split(/\r?\n/);
     for (let index = 0; index < lines.length; index += 1) {
       const line = lines[index] ?? "";
       for (const rule of RULES) {
         if (rule.extensions && !rule.extensions.includes(extension)) continue;
+        if (rule.requiresEwsContext && !hasEwsContext) continue;
         if (!rule.pattern.test(line)) continue;
         findings.push({
           ruleId: rule.id,
@@ -114,6 +119,8 @@ export function scanRepository(inputRoot        )             {
     limitations: [
       "Static evidence only; runtime EWS usage and tenant-side third-party applications require Microsoft EWS Usage Reports.",
       "A detected call does not prove a one-to-one Graph replacement; Microsoft documents remaining parity gaps.",
+      "Generic folder and item-operation names are reported only when the same file also contains a stronger EWS signature.",
+      "Comments, fixtures, and on-premises-only EWS code can still match; each finding requires human scope review.",
       "No files larger than 1 MB, generated outputs, dependency folders, or binary assemblies are inspected."
     ]
   };
