@@ -81,3 +81,5 @@ Every push and pull request runs the scanner, action-boundary, and complete-mani
 ## Paid pilot
 
 The EUR 149 human-reviewed launch pilot covers one application and one accepted source revision. It adds up to ten reconciled finding clusters, one optional AppID-filtered usage slice, up to five operation-family parity decisions, ten owner actions and a 30-minute handoff. The paid pilot is not live yet. No checkout, order, or payment is available from this preview release.
+
+If that exact scope fits a current business migration, use the [public pilot-interest form](https://github.com/NorphyOG/cutoversignal/issues/new?template=pilot-interest.yml). Select the explicit purchase-intent option only if you genuinely want to buy the EUR 149 pilot when checkout becomes available. The form collects no company name or email address and creates no order, reservation, contract, invoice, or payment.

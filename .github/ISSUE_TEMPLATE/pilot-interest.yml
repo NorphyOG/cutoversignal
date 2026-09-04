@@ -1,0 +1,60 @@
+name: EUR 149 pilot interest
+description: Record explicit, non-binding interest in the bounded EWS Readiness Pilot.
+title: "[Pilot interest] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is public. It creates no order, reservation, contract, invoice, or payment.
+
+        Do not include company names, email addresses, source code, evidence snippets, logs, tenant or mailbox identifiers, credentials, tokens, personal data, customer data, or security-sensitive details.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Pilot scope
+      description: The launch pilot is limited to one application and one accepted source revision.
+      options:
+        - "Select a scope"
+        - "One application and one source revision"
+        - "I need a different scope"
+    validations:
+      required: true
+  - type: dropdown
+    id: intent
+    attributes:
+      label: Commercial intent
+      description: Only the first option is treated as explicit purchase intent. No checkout or order is created here.
+      options:
+        - "Select an intent"
+        - "I want to buy the EUR 149 pilot when checkout is available"
+        - "I want scope details before deciding"
+        - "I am only evaluating the open-source scanner"
+    validations:
+      required: true
+  - type: checkboxes
+    id: business_use
+    attributes:
+      label: Business-use confirmation
+      options:
+        - label: I am evaluating this pilot for business or professional use.
+          required: true
+    validations:
+      required: true
+  - type: checkboxes
+    id: no_order
+    attributes:
+      label: No-order acknowledgement
+      options:
+        - label: I understand that this public issue creates no order, reservation, contract, invoice, or payment.
+          required: true
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: I confirm that this issue contains no company name, email address, source code, logs, credentials, tokens, identifiers, personal data, customer data, or security-sensitive information.
+          required: true
+    validations:
+      required: true
