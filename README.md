@@ -2,6 +2,8 @@
 
 Local, credential-free static inventory for likely Exchange Web Services dependencies.
 
+Start with the [Exchange Online EWS Migration Readiness Checklist](docs/EWS-MIGRATION-READINESS-CHECKLIST.md) to reconcile Microsoft 365 runtime reporting with static code evidence and turn findings into accountable migration decisions.
+
 ## Run
 
 Requires Node.js 22.6 or newer.
