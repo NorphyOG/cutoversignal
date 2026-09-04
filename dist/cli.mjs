@@ -1,12 +1,12 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { renderMarkdown, scanRepository } from "./scanner.ts";
+import { renderMarkdown, scanRepository } from "./scanner.mjs";
 
 const VERSION = "0.3.1";
 const args = process.argv.slice(2);
-const positionals: string[] = [];
-let formatOption: string | undefined;
-let outputOption: string | undefined;
+const positionals           = [];
+let formatOption                    ;
+let outputOption                    ;
 let showHelp = false;
 let showVersion = false;
 

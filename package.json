@@ -1,6 +1,6 @@
 {
   "name": "cutoversignal",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Credential-free Exchange Web Services migration readiness and Microsoft Graph planning scanner.",
   "private": false,
   "type": "module",
@@ -26,7 +26,9 @@
   "files": [
     ".github",
     "bin",
+    "dist",
     "src",
+    "scripts",
     "test",
     "docs",
     "action.yml",
@@ -42,8 +44,9 @@
     "node": ">=22.6.0"
   },
   "scripts": {
+    "build": "node --disable-warning=ExperimentalWarning scripts/build.mjs",
     "scan": "node --disable-warning=ExperimentalWarning --experimental-strip-types src/cli.ts",
-    "prepack": "npm test",
-    "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test test/*.test.ts"
+    "prepack": "npm run build && npm test",
+    "test": "npm run build && node --disable-warning=ExperimentalWarning --experimental-strip-types --test test/*.test.ts"
   }
 }

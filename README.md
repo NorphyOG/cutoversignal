@@ -19,10 +19,12 @@ Requires Node.js 22.6 or newer.
 Run the versioned CLI directly from GitHub without cloning or a global install:
 
 ```powershell
-npx --yes github:NorphyOG/cutoversignal#v0.3.0 C:\path\to\repository --format markdown --out ews-report.md
+npx --yes github:NorphyOG/cutoversignal#v0.3.1 C:\path\to\repository --format markdown --out ews-report.md
 ```
 
-The command is pinned to the `v0.3.0` Git tag. Exit code `1` means the scan completed and found EWS evidence that requires review.
+The command is pinned to the `v0.3.1` Git tag. Exit code `1` means the scan completed and found EWS evidence that requires review.
+
+Do not use `v0.3.0`: remote installation exposed Node's prohibition on stripping TypeScript inside `node_modules`. `v0.3.1` uses a tested JavaScript distribution while retaining the typed source and manifest verification.
 
 Or run a local clone:
 

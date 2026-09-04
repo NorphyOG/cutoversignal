@@ -10,7 +10,7 @@ const binPath = resolve("bin/cutoversignal.mjs");
 test("versioned package bin exposes stable help and version output", () => {
   const version = spawnSync(process.execPath, [binPath, "--version"], { encoding: "utf8" });
   assert.equal(version.status, 0);
-  assert.equal(version.stdout.trim(), "0.3.0");
+  assert.equal(version.stdout.trim(), "0.3.1");
 
   const help = spawnSync(process.execPath, [binPath, "--help"], { encoding: "utf8" });
   assert.equal(help.status, 0);
