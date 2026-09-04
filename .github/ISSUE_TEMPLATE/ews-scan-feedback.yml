@@ -24,6 +24,7 @@ body:
       label: Bounded scanner verdict
       description: Report only the final verdict printed by the scanner.
       options:
+        - "Select after running the scanner"
         - "EWS_MIGRATION_REQUIRED"
         - "EWS_NOT_DETECTED"
         - "RUN_FAILED"
@@ -49,6 +50,7 @@ body:
     attributes:
       label: Did the result change a migration decision?
       options:
+        - "Not determined"
         - "Yes"
         - "Not yet"
         - "No"
@@ -60,6 +62,7 @@ body:
       label: Would a bounded human review be useful?
       description: This is a non-binding demand signal. No purchase or payment is created.
       options:
+        - "Not stated"
         - "Yes, when the pilot becomes available"
         - "Maybe, depending on scope"
         - "No"
