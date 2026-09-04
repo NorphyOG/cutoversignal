@@ -18,6 +18,12 @@ npm test
 
 Exit code `1` means EWS evidence was detected and review is required. Exit code `0` means no configured signature was detected; it does not prove the repository or tenant is EWS-free.
 
+## Share a safe result
+
+After running the scanner, use the [structured scan-feedback form](https://github.com/NorphyOG/cutoversignal/issues/new?template=ews-scan-feedback.yml) to report only the verdict and finding categories. This gives the project measurable compatibility evidence without collecting source code, logs, tenant identifiers, credentials, mailbox content, or personal data.
+
+Useful feedback includes the scanner version, operating system, bounded verdict, detected category names, and whether the result changed a migration decision. Never paste evidence snippets from proprietary code. Security-sensitive findings belong in a private reporting channel, not a public issue.
+
 ## Scope
 
 - Scans supported text/code files up to 1 MB.
@@ -39,6 +45,8 @@ Primary references:
 Do not submit credentials, tokens, mailbox content, proprietary source, or tenant exports to a public issue. See `SECURITY.md`.
 
 This preview is published under the MIT License. Verify `MANIFEST.sha256` and run `npm test` after extraction before use.
+
+Every push and pull request runs the two package self-tests on Node.js 22 through the repository workflow.
 
 ## Paid pilot
 

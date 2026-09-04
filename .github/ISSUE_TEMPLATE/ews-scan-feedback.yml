@@ -1,0 +1,82 @@
+name: EWS scan feedback
+description: Share a redacted, count-level result from EWS Exit Scan Lite.
+title: "[Scan feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping validate the scanner. This form is public.
+
+        Do not include source code, evidence snippets, logs, tenant or mailbox identifiers, credentials, tokens, personal data, customer data, or security-sensitive details.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Scanner version
+      options:
+        - v0.1.0
+        - main branch
+        - another version
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Bounded scanner verdict
+      description: Report only the final verdict printed by the scanner.
+      options:
+        - EWS_MIGRATION_REQUIRED
+        - EWS_NOT_DETECTED
+        - RUN_FAILED
+    validations:
+      required: true
+  - type: checkboxes
+    id: categories
+    attributes:
+      label: Finding categories observed
+      description: Select categories only. Do not paste evidence or file content.
+      options:
+        - label: EWS SDK namespace or client construction
+        - label: Raw SOAP or EWS endpoint
+        - label: Autodiscover
+        - label: Impersonation
+        - label: Subscription or notification
+        - label: Folder or item operation
+        - label: Credential-related signal
+        - label: No category detected
+        - label: Scanner failed before a verdict
+  - type: dropdown
+    id: decision_value
+    attributes:
+      label: Did the result change a migration decision?
+      options:
+        - Yes
+        - Not yet
+        - No
+    validations:
+      required: true
+  - type: dropdown
+    id: review_interest
+    attributes:
+      label: Would a bounded human review be useful?
+      description: This is a non-binding demand signal. No purchase or payment is created.
+      options:
+        - Yes, when the pilot becomes available
+        - Maybe, depending on scope
+        - No
+    validations:
+      required: true
+  - type: textarea
+    id: redacted_note
+    attributes:
+      label: Optional redacted note
+      description: Describe only general compatibility or usability. Do not paste code, logs, identifiers, or sensitive data.
+      placeholder: General, non-sensitive feedback only.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: I confirm that this issue contains no source code, logs, credentials, tokens, identifiers, personal data, customer data, or security-sensitive information.
+          required: true
+    validations:
+      required: true
