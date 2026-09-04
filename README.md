@@ -20,6 +20,34 @@ npm test
 
 Exit code `1` means EWS evidence was detected and review is required. Exit code `0` means no configured signature was detected; it does not prove the repository or tenant is EWS-free.
 
+## Run in GitHub Actions
+
+Add this minimal workflow to the repository you want to inspect:
+
+```yaml
+name: EWS exit scan
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: NorphyOG/cutoversignal@v0.2.0
+```
+
+The action resolves the requested scan root and refuses filesystem links that escape the checked-out workspace. It writes `ews-exit-scan-report.md` into a unique private directory under the GitHub runner temporary root, exposes the absolute path as `report-path`, and fails after report creation when it detects EWS evidence. The GitHub step summary contains only verdict and counts—never filenames or evidence snippets. Detailed artifact upload is off by default because reports from public repositories may reveal proprietary code context.
+
+The `output` input is a filename, not a path; directory separators, control characters, Windows device names, and ambiguous trailing characters are rejected. Use the `report-path` output if another step needs the local report.
+
+Set `upload-report: "true"` only after reviewing that disclosure boundary. Use `fail-on-findings: "false"` for an observation-only first run.
+
 ## Share a safe result
 
 After running the scanner, use the [structured scan-feedback form](https://github.com/NorphyOG/cutoversignal/issues/new?template=ews-scan-feedback.yml) to report only the verdict and finding categories. This gives the project measurable compatibility evidence without collecting source code, logs, tenant identifiers, credentials, mailbox content, or personal data.
@@ -46,9 +74,9 @@ Primary references:
 
 Do not submit credentials, tokens, mailbox content, proprietary source, or tenant exports to a public issue. See `SECURITY.md`.
 
-This preview is published under the MIT License. Verify `MANIFEST.sha256` and run `npm test` after extraction before use.
+This preview is published under the MIT License. Verify `MANIFEST.sha256` and run `npm test` after extraction before use. The manifest test requires every first-party file in the release tree except the manifest itself to be hash-bound and rejects symbolic links. Git metadata and locally installed `node_modules` dependencies are outside the release manifest.
 
-Every push and pull request runs the two package self-tests on Node.js 22 through the repository workflow.
+Every push and pull request runs the scanner, action-boundary, and complete-manifest self-tests on Node.js 22 through the repository workflow.
 
 ## Paid pilot
 

@@ -15,7 +15,6 @@ A minimal synthetic reproduction, affected version, expected result, actual resu
 
 ## Supported preview
 
-Version `0.1.0` is a bounded preview for Node.js 22.6 or newer. Static findings can be incomplete or incorrect. The tool does not connect to Microsoft 365, modify repositories, certify migration readiness, or prove Graph parity.
+Version `0.2.0` is a bounded preview for Node.js 22.6 or newer. Static findings can be incomplete or incorrect. The scanner does not connect to Microsoft 365 or certify migration readiness. The GitHub Action reads only a canonically workspace-contained scan root and writes its report under the runner temporary directory; the local CLI writes only to the path explicitly selected by its operator. Neither mode proves Graph parity.
 
 Security-sensitive reports must use an enabled private reporting channel; do not disclose sensitive material in public issues.
-

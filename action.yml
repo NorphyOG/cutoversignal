@@ -1,0 +1,70 @@
+name: CutoverSignal EWS Exit Scan
+description: Credential-free static EWS dependency scan for the checked-out repository.
+author: CutoverSignal
+
+branding:
+  icon: search
+  color: purple
+
+inputs:
+  path:
+    description: Repository-relative directory to scan.
+    required: false
+    default: .
+  format:
+    description: Report format, either markdown or json.
+    required: false
+    default: markdown
+  output:
+    description: Safe report filename. The action creates it in a unique directory under the GitHub runner temporary root.
+    required: false
+    default: ews-exit-scan-report.md
+  fail-on-findings:
+    description: Fail the workflow after producing the report when EWS evidence is detected.
+    required: false
+    default: "true"
+  upload-report:
+    description: Upload the detailed report as a workflow artifact. Keep false for public repositories unless evidence disclosure is acceptable.
+    required: false
+    default: "false"
+
+outputs:
+  verdict:
+    description: EWS_NOT_DETECTED or EWS_MIGRATION_REQUIRED.
+    value: ${{ steps.scan.outputs.verdict }}
+  finding-count:
+    description: Number of detected EWS evidence matches.
+    value: ${{ steps.scan.outputs.finding_count }}
+  report-path:
+    description: Absolute path of the generated report under the GitHub runner temporary root.
+    value: ${{ steps.scan.outputs.report_path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Use Node.js 22
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 22
+    - name: Run credential-free EWS scan
+      id: scan
+      shell: bash
+      env:
+        CUTOVERSIGNAL_SCAN_PATH: ${{ inputs.path }}
+        CUTOVERSIGNAL_REPORT_FORMAT: ${{ inputs.format }}
+        CUTOVERSIGNAL_REPORT_OUTPUT: ${{ inputs.output }}
+        CUTOVERSIGNAL_FAIL_ON_FINDINGS: ${{ inputs.fail-on-findings }}
+        CUTOVERSIGNAL_UPLOAD_REPORT: ${{ inputs.upload-report }}
+      run: node --disable-warning=ExperimentalWarning --experimental-strip-types "$GITHUB_ACTION_PATH/src/action.ts"
+    - name: Upload detailed report
+      if: ${{ inputs.upload-report == 'true' }}
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: cutoversignal-ews-exit-scan
+        path: ${{ steps.scan.outputs.report_path }}
+        if-no-files-found: error
+        retention-days: 7
+    - name: Enforce EWS finding gate
+      if: ${{ steps.scan.outputs.should_fail == 'true' }}
+      shell: bash
+      run: exit 1
