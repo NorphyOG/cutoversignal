@@ -13,9 +13,9 @@ body:
     attributes:
       label: Scanner version
       options:
-        - v0.1.0
-        - main branch
-        - another version
+        - "v0.1.0"
+        - "main branch"
+        - "another version"
     validations:
       required: true
   - type: dropdown
@@ -24,9 +24,9 @@ body:
       label: Bounded scanner verdict
       description: Report only the final verdict printed by the scanner.
       options:
-        - EWS_MIGRATION_REQUIRED
-        - EWS_NOT_DETECTED
-        - RUN_FAILED
+        - "EWS_MIGRATION_REQUIRED"
+        - "EWS_NOT_DETECTED"
+        - "RUN_FAILED"
     validations:
       required: true
   - type: checkboxes
@@ -49,9 +49,9 @@ body:
     attributes:
       label: Did the result change a migration decision?
       options:
-        - Yes
-        - Not yet
-        - No
+        - "Yes"
+        - "Not yet"
+        - "No"
     validations:
       required: true
   - type: dropdown
@@ -60,9 +60,9 @@ body:
       label: Would a bounded human review be useful?
       description: This is a non-binding demand signal. No purchase or payment is created.
       options:
-        - Yes, when the pilot becomes available
-        - Maybe, depending on scope
-        - No
+        - "Yes, when the pilot becomes available"
+        - "Maybe, depending on scope"
+        - "No"
     validations:
       required: true
   - type: textarea
