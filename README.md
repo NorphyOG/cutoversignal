@@ -1,8 +1,16 @@
-# CutoverSignal — EWS Exit Scan Lite
+# CutoverSignal — Exchange Web Services (EWS) Migration Readiness Tool
 
-Local, credential-free static inventory for likely Exchange Web Services dependencies.
+Credential-free static analysis for Exchange Web Services migration, Microsoft Graph migration planning, Exchange Online retirement readiness, and legacy EWS dependency inventory.
 
 Start with the [Exchange Online EWS Migration Readiness Checklist](docs/EWS-MIGRATION-READINESS-CHECKLIST.md) to reconcile Microsoft 365 runtime reporting with static code evidence and turn findings into accountable migration decisions.
+
+## What it answers
+
+- Which repositories contain likely Exchange Web Services dependencies?
+- Which EWS SDK, SOAP, Autodiscover, impersonation, subscription, or credential patterns need review before a Microsoft Graph migration?
+- Which static findings should enter an Exchange Online EWS retirement plan?
+
+CutoverSignal is designed for engineering and migration teams that need a local, repeatable first-pass inventory before deeper tenant-side validation. It does not claim automatic feature parity or complete migration readiness.
 
 ## Run
 

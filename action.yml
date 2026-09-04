@@ -1,5 +1,5 @@
 name: CutoverSignal EWS Exit Scan
-description: Credential-free static EWS dependency scan for the checked-out repository.
+description: Credential-free Exchange Web Services migration readiness scan for Microsoft Graph planning.
 author: CutoverSignal
 
 branding:
