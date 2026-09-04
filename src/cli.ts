@@ -2,12 +2,71 @@ import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { renderMarkdown, scanRepository } from "./scanner.ts";
 
+const VERSION = "0.3.0";
 const args = process.argv.slice(2);
-const input = args.find((arg) => !arg.startsWith("--")) ?? ".";
-const formatIndex = args.findIndex((arg) => arg === "--format" || arg === "-f");
-const outputIndex = args.findIndex((arg) => arg === "--out" || arg === "-o");
-const format = formatIndex >= 0 ? args[formatIndex + 1] : (args[1] ?? "markdown");
-const output = outputIndex >= 0 ? args[outputIndex + 1] : args[2];
+const positionals: string[] = [];
+let formatOption: string | undefined;
+let outputOption: string | undefined;
+let showHelp = false;
+let showVersion = false;
+
+for (let index = 0; index < args.length; index += 1) {
+  const arg = args[index];
+  if (arg === "--help" || arg === "-h") {
+    showHelp = true;
+  } else if (arg === "--version" || arg === "-v") {
+    showVersion = true;
+  } else if (arg === "--format" || arg === "-f") {
+    formatOption = args[index + 1];
+    if (!formatOption || formatOption.startsWith("-")) {
+      console.error(`${arg} requires markdown or json`);
+      process.exit(2);
+    }
+    index += 1;
+  } else if (arg === "--out" || arg === "-o") {
+    outputOption = args[index + 1];
+    if (!outputOption || outputOption.startsWith("-")) {
+      console.error(`${arg} requires a file path`);
+      process.exit(2);
+    }
+    index += 1;
+  } else if (arg.startsWith("-")) {
+    console.error(`Unknown option: ${arg}`);
+    process.exit(2);
+  } else {
+    positionals.push(arg);
+  }
+}
+
+if (showHelp) {
+  process.stdout.write([
+    "CutoverSignal — Exchange Web Services migration readiness scanner",
+    "",
+    "Usage:",
+    "  cutoversignal [repository] [--format markdown|json] [--out report-file]",
+    "",
+    "Exit codes:",
+    "  0  No configured EWS signature detected",
+    "  1  EWS evidence detected and review is required",
+    "  2  Invalid command-line input",
+    ""
+  ].join("\n"));
+  process.exit(0);
+}
+
+if (showVersion) {
+  process.stdout.write(`${VERSION}\n`);
+  process.exit(0);
+}
+
+if (positionals.length > 3) {
+  console.error("Expected at most repository, format, and output positional values");
+  process.exit(2);
+}
+
+const input = positionals[0] ?? ".";
+const format = formatOption ?? positionals[1] ?? "markdown";
+const output = outputOption ?? positionals[2];
 
 if (format !== "markdown" && format !== "json") {
   console.error("--format must be markdown or json");

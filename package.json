@@ -1,14 +1,49 @@
 {
-  "name": "cutoversignal-ews-exit-scan-lite",
-  "version": "0.2.0",
+  "name": "cutoversignal",
+  "version": "0.3.0",
   "description": "Credential-free Exchange Web Services migration readiness and Microsoft Graph planning scanner.",
-  "private": true,
+  "private": false,
   "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NorphyOG/cutoversignal.git"
+  },
+  "homepage": "https://github.com/NorphyOG/cutoversignal#readme",
+  "bugs": {
+    "url": "https://github.com/NorphyOG/cutoversignal/issues"
+  },
+  "keywords": [
+    "ews",
+    "exchange-web-services",
+    "microsoft-graph",
+    "migration-readiness",
+    "static-analysis"
+  ],
+  "bin": {
+    "cutoversignal": "bin/cutoversignal.mjs"
+  },
+  "files": [
+    ".github",
+    "bin",
+    "src",
+    "test",
+    "docs",
+    "action.yml",
+    "LICENSE",
+    "MANIFEST.sha256",
+    "README.md",
+    "SECURITY.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=22.6.0"
   },
   "scripts": {
     "scan": "node --disable-warning=ExperimentalWarning --experimental-strip-types src/cli.ts",
+    "prepack": "npm test",
     "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test test/*.test.ts"
   }
 }
