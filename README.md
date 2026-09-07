@@ -14,6 +14,8 @@ Need the deadline answer first? Read the [October 2026 EWS retirement readiness 
 
 CutoverSignal is designed for engineering and migration teams that need a local, repeatable first-pass inventory before deeper tenant-side validation. It does not claim automatic feature parity or complete migration readiness.
 
+See the [synthetic example report and EUR 149 pilot handoff](docs/EXAMPLE-REPORT-AND-PILOT-HANDOFF.md) for the exact scanner output and the additional decisions delivered by the human-reviewed pilot. The example contains no customer source, tenant data, credentials, or real organization identifiers.
+
 ## Run
 
 Requires Node.js 22.6 or newer.
