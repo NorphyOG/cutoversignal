@@ -4,6 +4,8 @@ Credential-free static analysis for Exchange Web Services migration, Microsoft G
 
 Start with the [Exchange Online EWS Migration Readiness Checklist](docs/EWS-MIGRATION-READINESS-CHECKLIST.md) to reconcile Microsoft 365 runtime reporting with static code evidence and turn findings into accountable migration decisions.
 
+Need the deadline answer first? Read the [October 2026 EWS retirement readiness brief](docs/EWS-RETIREMENT-OCTOBER-2026.md) for a 30-minute inventory using Microsoft 365 usage evidence plus a credential-free static scan.
+
 ## What it answers
 
 - Which repositories contain likely Exchange Web Services dependencies?
