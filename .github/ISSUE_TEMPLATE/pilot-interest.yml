@@ -9,6 +9,20 @@ body:
 
         Do not include company names, email addresses, source code, evidence snippets, logs, tenant or mailbox identifiers, credentials, tokens, personal data, customer data, or security-sensitive details.
   - type: dropdown
+    id: source_surface
+    attributes:
+      label: Discovery source
+      description: Select where you found this form. This is category-only attribution; do not add a company, person, URL, or tracking data.
+      options:
+        - "October 2026 EWS retirement readiness brief"
+        - "Exchange Online EWS Migration Readiness Checklist"
+        - "Repository README"
+        - "GitHub search, topic, or recommendation"
+        - "Direct repository link"
+        - "Other or not sure"
+    validations:
+      required: true
+  - type: dropdown
     id: scope
     attributes:
       label: Pilot scope
